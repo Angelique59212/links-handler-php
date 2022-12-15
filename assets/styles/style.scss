@@ -1,0 +1,84 @@
+@use "modules/vars";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: darkgray;
+}
+
+.link-menu {
+  padding: vars.$padding;
+}
+
+#login > ul li{
+  display: inline-block;
+}
+
+ul {
+  font-size: 1.5rem;
+  text-align: vars.$text-align;
+  padding: 1rem;
+  a {
+    text-decoration: none;
+    color: #4a4a4b;
+  }
+}
+/* Home */
+
+h1 {
+  color: #3f3f41;
+  margin: vars.$margin;
+  text-align: vars.$text-align ;
+}
+
+.home {
+  padding: 1.2rem;
+  background-color: #b9b5af;
+}
+
+#image-home {
+  @extend .generic-flex;
+  #img_home {
+    margin: 5rem;
+    width: 53vw;
+    height: 50vh;
+  }
+}
+
+/* Register */
+
+#form-register {
+  width: 40vw;
+  font-size: 1.2rem;
+  margin: 2rem;
+  padding: vars.$padding;
+  border: vars.$border;
+
+  label {
+    display: inline-block;
+    text-align: vars.$text-align;
+    width: 15vw;
+    margin: vars.$margin;
+  }
+
+  input {
+    height: 3vh;
+    width: 24vw;
+    margin-left: 0.4rem;
+  }
+
+  .submit {
+    font-size: 1.2rem;
+    width: 10vw;
+    height: 5vh;
+    margin: vars.$margin;
+    padding: vars.$padding;
+  }
+}
+
+
+
