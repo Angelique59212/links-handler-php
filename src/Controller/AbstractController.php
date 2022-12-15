@@ -38,7 +38,7 @@ abstract class AbstractController
     public  function redirectIfNotConnected(): void
     {
         if(!self::verifyUserConnect()) {
-            $this->render('home/home');
+            $this->render('user/login');
         }
     }
 
@@ -74,7 +74,6 @@ abstract class AbstractController
         }
         return true;
     }
-
 
     /**
      * sanitize data

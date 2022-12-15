@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Model\Manager\LinksManager;
-use App\Model\Manager\UserManager;
 use JetBrains\PhpStorm\NoReturn;
 use Links;
 use User;
@@ -42,7 +41,7 @@ class LinkController extends AbstractController
                 ->setImage($image)
                 ->setLinksUser($user)
                 ;
-            if (LinksManager::addNewLink($link, $name, $image, $_SESSION['user']->getId())) {
+            if (LinksManager::addNewLink($link)) {
                 $_SESSION['success'] = "Votre lien a bien été ajouté";
                 header('Location: /?c=home&a=home');
             }
@@ -50,6 +49,6 @@ class LinkController extends AbstractController
                 $this->render('link/add-link');
             }
         }
-        $this->render('link/add-link');
+        $this->render('home/home');
     }
 }
