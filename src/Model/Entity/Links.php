@@ -6,6 +6,25 @@ namespace App\Model\Entity;
 class Links extends AbstractEntity
 {
     private string $name;
+
+    /**
+     * @return string
+     */
+    public function getLink(): string
+    {
+        return $this->link;
+    }
+
+    /**
+     * @param string $link
+     */
+    public function setLink(string $link): self
+    {
+        $this->link = $link;
+        return $this;
+    }
+
+    private string $link;
     private string $image;
     private User $linksUser;
 

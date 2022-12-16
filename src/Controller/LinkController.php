@@ -19,35 +19,37 @@ class LinkController extends AbstractController
     #[NoReturn] public function addLink() {
         self::redirectIfNotConnected();
         if ($this->verifyFormSubmit()) {
-            $image = $this->getFormFieldImage('image');
+            $image = $this->getFormFieldImage('imageName');
+            $linkName = $this->getFormField('link');
 
             //Redirect if no image provided
             if (!$image) {
                 $_SESSION['error'] = "Vous n'avez pas fourni d'image";
                 header('Location: /?c=link&a=add-link');
-                die();
+                exit();
             }
 
             $user = $_SESSION['user'];
 
             //Getting and securing form content
-            $name = $this->dataClean($this->getFormField('name'));
-            $image = $this->dataClean($this->getFormField('image'));
+            $name = $this->dataClean($this->getFormField('title'));
 
             $link = new Links();
             $link
                 ->setName($name)
                 ->setImage($image)
+                ->setLink($linkName)
                 ->setLinksUser($user)
                 ;
             if (LinksManager::addNewLink($link)) {
                 $_SESSION['success'] = "Votre lien a bien été ajouté";
-                header('Location: /?c=home&a=home');
+                header('Location: /?c=home');
+                exit();
             }
             else {
                 $this->render('link/add-link');
             }
         }
-        $this->render('home/home');
+        $this->render('link/add-link');
     }
 }

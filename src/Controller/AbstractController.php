@@ -123,10 +123,10 @@ abstract class AbstractController
      * @param string $field
      * @return false|string
      */
-    public function getFormFieldImage(string $field): bool|string
+    #[NoReturn] public function getFormFieldImage(string $field): bool|string
     {
         // Return false if asked image does not exist.
-        if(!$_FILES[$field]) {
+        if(!isset($_FILES[$field])) {
             return false;
         }
 
@@ -144,7 +144,7 @@ abstract class AbstractController
         $oldName = $_FILES[$field]['name'];
         $newName = (new DateTime())->format('ymdhis') . '-' . uniqid();
         $newName .= substr($oldName, strripos($oldName, '.'));
-        if (!move_uploaded_file($_FILES[$field]['tmp_name'], 'uploads/' . $newName)) {
+        if (!move_uploaded_file($_FILES[$field]['tmp_name'], 'img/' . $newName)) {
             $_SESSION['error'] = "Echec de l'enregistrement de l'image";
             return false;
         }

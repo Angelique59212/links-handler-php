@@ -4,25 +4,28 @@ namespace App\Model\Manager;
 
 use App\Model\Connect;
 use App\Model\Entity\Links;
+use JetBrains\PhpStorm\NoReturn;
 
 class LinksManager
 {
     public const TABLE = 'mdf58_links';
 
+
     /**
      * @param Links $links
      * @return bool
      */
-    public static function addNewLink(Links $links): bool
+    #[NoReturn] public static function addNewLink(Links $links): bool
     {
         $stmt = Connect::dbConnect()->prepare("
-            INSERT INTO " . self::TABLE . " (links, image, user_fk)
-            VALUES (:links, :image, :user_fk)
+            INSERT INTO " . self::TABLE . " (name,link, image, user_fk)
+            VALUES (:name,:link, :image, :user_fk)
         ");
 
         $stmt->bindValue(':name', $links->getName());
+        $stmt->bindValue(':link', $links->getLink());
         $stmt->bindValue(':image', $links->getImage());
-        $stmt->bindValue('user_fk', $links->getLinksUser()->getId());
+        $stmt->bindValue(':user_fk', $links->getLinksUser()->getId());
 
 
         $result = $stmt->execute();
@@ -59,6 +62,7 @@ class LinksManager
         return (new Links())
             ->setId($data['id'])
             ->setName($data['name'])
+            ->setLink($data['link'])
             ->setImage($data['image'])
             ->setLinksUser(UserManager::getUserById($data['user_fk']))
             ;
@@ -77,4 +81,21 @@ class LinksManager
         }
         return false;
     }
+
+    /**
+     * @param int $id
+     * @return array
+     */
+    public static function getAllLinkByUserId(int $id): array
+    {
+        $links = [];
+        $result = Connect::dbConnect()->query("SELECT * FROM " . self::TABLE . " WHERE user_fk = $id");
+        if ($result) {
+            foreach ($result->fetchAll() as $data) {
+                $links[] = self::makeLink($data);
+            }
+        }
+        return $links;
+    }
+
 }

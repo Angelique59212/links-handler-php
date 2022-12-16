@@ -8,8 +8,12 @@
             <input type="text" name="title" id="title">
         </div>
         <div>
-            <label for="image-acces">Chemin d'accès à l'image</label>
-            <input type="file" name="image" id="image-acces">
+            <label for="link">Lien</label>
+            <input type="text" name="link" id="link">
+        </div>
+        <div>
+            <label for="imageName">Chemin d'accès à l'image</label>
+            <input type="file" name="imageName" id="imageName">
         </div>
 
         <input type="submit" id="btn-addLink" name="submit" value="Enregistrer">

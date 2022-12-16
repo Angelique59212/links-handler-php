@@ -88,4 +88,15 @@ class UserManager
         }
         return null;
     }
+
+    public static function getUserByPseudo(string $pseudo): ? User
+    {
+        $stmt = Connect::dbConnect()->prepare("SELECT * FROM " . self::TABLE . " WHERE pseudo = :pseudo");
+        $stmt->bindParam(':pseudo', $pseudo);
+        $result = $stmt->execute();
+        if ($result && $data = $stmt->fetch()) {
+            return self::makeUser($data);
+        }
+        return null;
+    }
 }

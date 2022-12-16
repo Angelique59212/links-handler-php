@@ -43,7 +43,7 @@ if (isset($_SESSION['success'])) {
                     <ul>
                         <li><a class="link-menu" href="/?c=home">Accueil</a></li>
                         <li><a class="link-menu" href="/?c=link&a=add-link">Ajouter un lien</a></li>
-                        <li><a class="link-menu" href="/c=user&a=disconnect">Se déconnecter</a></li>
+                        <li><a class="link-menu" href="/?c=user&a=disconnect">Se déconnecter</a></li>
                     </ul>
                 <?php
             } ?>

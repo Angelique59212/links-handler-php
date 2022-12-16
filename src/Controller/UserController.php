@@ -73,17 +73,17 @@ class UserController extends AbstractController
 
     #[NoReturn] public function login()
     {
-        if (isset($_POST['submit'])) {
-
-            if (!$this->formIsset('email', 'password')) {
+        if ($this->verifyFormSubmit()) {
+            if (!$this->formIsset('pseudo', 'password')) {
                 $_SESSION['error'] = "Un champ est manquant";
                 header("Location: /?c=user&a=login");
-                die();
+                exit();
             }
 
-            $mail = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-            $password = $_POST['password'];
-            $user = UserManager::getUserByMail($mail);
+            $pseudo = $this->dataClean(filter_var($_POST['pseudo'], FILTER_SANITIZE_STRING));
+            $password = $this->getFormField('password');
+
+            $user = UserManager::getUserByPseudo($pseudo);
 
             // If user where found from database and password is ok.
             if ($user && password_verify($password, $user->getPassword())) {
@@ -91,34 +91,13 @@ class UserController extends AbstractController
                 //storing user in session.
                 $_SESSION['user'] = $user;
             } else {
-                $_SESSION['error'] = 'Mot de passe ou adresse mail incorrect';
+                $_SESSION['error'] = 'Mot de passe ou pseudo incorrect';
             }
-            header('Location: /?c=home');
-            die();
+            header('Location: /?c=home&a=home');
+            exit();
         }
 
         $this->render('user/login');
-//        self::redirectIfConnected();
-//
-//        if ($this->verifyFormSubmit()) {
-//            $errorMessage = "Données non correctes";
-//            $mail = $this->dataClean($this->getFormField('email'));
-//            $password = $this->getFormField('password');
-//
-//            $user = UserManager::getUserByMail($mail);
-//            if (null === $user) {
-//                $_SESSION['errors'][] = $errorMessage;
-//            } else {
-//                if (password_verify($password, $user->getPassword())) {
-//                    $_SESSION['user'] = $user;
-//                    $this->redirectIfConnected();
-//                } else {
-//                    $_SESSION['errors'][] = $errorMessage;
-//                }
-//            }
-//        }
-//
-//        $this->render('user/login');
     }
 
     public function disconnect(): void
@@ -131,18 +110,7 @@ class UserController extends AbstractController
         session_unset();
         session_destroy();
 
-        // Restart session to be able to use messages in session.
-        session_start();
-
-        // Setting again existing messages into the session.
-        if ($error) {
-            $_SESSION['error'] = $error;
-        }
-
-        if ($success) {
-            $_SESSION['success'] = $success;
-        }
-
-        header("Location: /?c=home/home");
+        header("Location: /?c=home");
+        exit();
     }
 }
