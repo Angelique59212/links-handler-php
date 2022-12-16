@@ -2,10 +2,9 @@
 
 namespace App\Controller;
 
+use App\Model\Entity\Links;
 use App\Model\Manager\LinksManager;
 use JetBrains\PhpStorm\NoReturn;
-use Links;
-use User;
 
 class LinkController extends AbstractController
 {

@@ -1,6 +1,6 @@
 <?php
 
-use App\Model\Entity\AbstractEntity;
+namespace App\Model\Entity;
 
 class User extends AbstractEntity
 {

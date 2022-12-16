@@ -2,8 +2,8 @@
 
 namespace App\Model\Manager;
 
-use Connect;
-use User;
+use App\Model\Connect;
+use App\Model\Entity\User;
 
 class UserManager
 {

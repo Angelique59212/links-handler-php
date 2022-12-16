@@ -1,7 +1,7 @@
 <?php
 
 
-use App\Model\Entity\AbstractEntity;
+namespace App\Model\Entity;
 
 class Links extends AbstractEntity
 {

@@ -3,7 +3,7 @@
         <form id="form-register" action="/?c=user&a=register" method="post" >
             <div>
                 <label for="pseudo">Pseudo</label>
-                <input type="text" id="pseudo" name="pseudo" minlength="2" maxlength="50" required >
+                <input type="text" id="pseudo" name="pseudo" minlength="2" maxlength="50"  >
             </div>
             <div>
                 <label for="email">Adresse mail</label>
@@ -15,7 +15,7 @@
             </div>
             <div>
                 <label for="repeat-password">Répétez votre mot de passe</label>
-                <input type="password" id="password" name="password" required>
+                <input type="password" id="password" name="repeat-password" required>
             </div>
 
             <input type="submit" class="submit" name="submit" value="S'inscrire">

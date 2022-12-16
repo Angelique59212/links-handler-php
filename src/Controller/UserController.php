@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
+use App\Model\Entity\User;
 use App\Model\Manager\UserManager;
 use JetBrains\PhpStorm\NoReturn;
-use User;
 
 class UserController extends AbstractController
 {
@@ -21,99 +21,54 @@ class UserController extends AbstractController
      */
     #[NoReturn] public function register(): void
     {
-        self::redirectIfConnected();
+        if ($this->verifyFormSubmit()) {
 
-        /**
-         * verification of information
-         */
-        if (!isset($_POST['submit'])) {
-            $this->render('user/register');
+            $pseudo = $this->dataClean(filter_var($_POST['pseudo'], FILTER_SANITIZE_STRING));
+            $mail = $this->dataClean(filter_var($_POST['email'], FILTER_SANITIZE_EMAIL));
+            $password = $this->dataClean($this->getFormField('password'));
+
+
+            if (!$this->formIsset('pseudo', 'email', 'password')) {
+                $_SESSION['error'] = "Un champ est manquant";
+                header("Location: /?c=user&a=register");
+                exit();
+            }
+
+            if ($this->checkPassword($_POST['password'],$_POST['repeat-password'])) {
+
+                $_SESSION['error'] = "Les password ne correspondent pas, ou il ne respecte pas les critères de sécurité (minuscule, majuscule, nombre, caractère spécial)";
+                header("Location: /?c=user&a=register");
+                exit();
+            }
+
+            if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
+                $_SESSION['error'] = "L'email n'est pas valide";
+                header("Location: /?c=user&a=register");
+                exit();
+            }
+
+            if (UserManager::mailExist($mail)) {
+
+                $_SESSION['error'] = "L'email existe déjà";
+                header("Location: /?c=user&a=register");
+                exit();
+            }
+
+            /**
+             * registration of the user in the database
+             */
+            $user = new User();
+            $user
+                ->setPseudo($pseudo)
+                ->setEmail($mail)
+                ->setPassword(password_hash($password, PASSWORD_ARGON2I));
+            UserManager::addUser($user);
+
+            $_SESSION['user'] = $user;
+            $_SESSION['success'] = "Vous êtes bien enregistré";
+            $this->render('home/home');
         }
-
-        if (!$this->formIsset('pseudo','email', 'password')) {
-            $_SESSION['error'] = "Un champ est manquant";
-            header("Location: /?c=user");
-            die();
-        }
-
-        $pseudo = $this->dataClean(filter_var($_POST['pseudo'], FILTER_SANITIZE_STRING));
-        $mail = $this->dataClean(filter_var($_POST['email'], FILTER_SANITIZE_EMAIL));
-        $password = password_hash($_POST['password'], PASSWORD_ARGON2I);
-        $passwordRepeat = $this->dataClean($this->getFormField('password-repeat'));
-
-        if ($password !== $passwordRepeat) {
-            $_SESSION['error'] = "Les password ne correspondent pas, ou il ne respecte pas les critères de sécurité (minuscule, majuscule, nombre, caractère spécial)";
-            header("Location: /?c=user");
-            die();
-        }
-
-        if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
-            $_SESSION['error'] = "L'email n'est pas valide";
-            header("Location: /?c=user");
-            die();
-        }
-
-        if (UserManager::mailExist($mail)) {
-            $_SESSION['error'] = "L'email existe déjà";
-            header("Location: /?c=user");
-            die();
-        }
-
-        /**
-         * registration of the user and the validation key in the database
-         */
-        $user = (new User())
-            ->setEmail($mail)
-            ->setPseudo($pseudo)
-            ->setPassword($password)
-        ;
-
-        if (!UserManager::addUser($user)) {
-            $_SESSION['error'] = "Enregistrement impossible, réessayez plus tard";
-            header("Location: /?c=user&a=register");
-            die();
-        }
-
-//        self::redirectIfConnected();
-//
-//        if ($this->verifyFormSubmit()) {
-//            $mail = $this->dataClean($this->getFormField('email'));
-//            $pseudo = $this->dataClean($this->getFormField('pseudo'));
-//            $password = password_hash($_POST['password'], PASSWORD_ARGON2I);
-//            $passwordRepeat = $this->dataClean($this->getFormField('password-repeat'));
-//
-//
-//            $mail = filter_var($mail, FILTER_SANITIZE_EMAIL);
-//            if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
-//                $_SESSION['error'] = "L'adresse mail n'est pas valide";
-//            }
-//
-//            if ($password !== $passwordRepeat) {
-//                $_SESSION['error'] = "Les password ne correspondent pas";
-//            }
-//            else {
-//                $user = new User();
-//                $user
-//                    ->setPseudo($pseudo)
-//                    ->setEmail($mail)
-//                    ->setPassword(password_hash($password, PASSWORD_ARGON2I));
-//                if (!UserManager::mailExist($user->getEmail())) {
-//                    if (!UserManager::userExists($user->getPseudo())) {
-//                        UserManager::addUser($user);
-//                    }
-//                    if (null !== $user->getId()) {
-//                        $_SESSION['success'] = "Compte activé";
-//                        $_SESSION['user'] = $user;
-//                        header("Location: /?c=home");
-//                    } else {
-//                        $_SESSION['errors'] = "Erreur d'enregistrement";
-//                    }
-//                } else {
-//                    $_SESSION['errors'] = "Adresse mail déjà existante";
-//                }
-//            }
-//        }
-//        $this->render('user/register');
+        $this->render('user/register');
     }
 
     #[NoReturn] public function login()
@@ -132,11 +87,10 @@ class UserController extends AbstractController
 
             // If user where found from database and password is ok.
             if ($user && password_verify($password, $user->getPassword())) {
-              $_SESSION['success'] = "Connexion validée";
+                $_SESSION['success'] = "Connexion validée";
                 //storing user in session.
-              $_SESSION['user'] = $user;
-            }
-            else {
+                $_SESSION['user'] = $user;
+            } else {
                 $_SESSION['error'] = 'Mot de passe ou adresse mail incorrect';
             }
             header('Location: /?c=home');
@@ -189,6 +143,6 @@ class UserController extends AbstractController
             $_SESSION['success'] = $success;
         }
 
-        header("Location: /index.php");
+        header("Location: /?c=home/home");
     }
 }

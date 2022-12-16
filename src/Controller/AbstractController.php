@@ -89,19 +89,19 @@ abstract class AbstractController
 
     /**
      * @param string $password
-     * @param string $password_repeat
+     * @param string $repeatPassword
      * @return bool
      */
-    public function checkPassword(string $password, string $password_repeat): bool
+    public function checkPassword(string $password, string $repeatPassword): bool
     {
         $uppercase = preg_match('/[A-Z]/', $password);
         $lowercase = preg_match('/[a-z]/', $password);
         $number    = preg_match('/[0-9]/', $password);
         $specialChars = preg_match('/[^\w]/', $password);
-        $same = $password === $password_repeat;
-        $lenght = strlen($password) >= 7 && strlen($password) <= 70;
+        $same = $password === $repeatPassword;
+        $length = strlen($password) >= 7 && strlen($password) <= 70;
 
-        return $uppercase && $lowercase && $number && $specialChars && $same && $lenght;
+        return $uppercase && $lowercase && $number && $specialChars && $same && $length;
     }
 
     /**

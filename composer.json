@@ -3,6 +3,7 @@
     "autoload": {
         "psr-4": {
             "App\\": "src/"
+
         }
     },
     "authors": [
@@ -11,5 +12,8 @@
             "email": "dehainaut.angelique@orange.fr"
         }
     ],
-    "require": {}
+    "require": {
+        "symfony/error-handler": "^6.2",
+      "ext-pdo": "*"
+    }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Model\Manager;
 
-use Connect;
-use Links;
+use App\Model\Connect;
+use App\Model\Entity\Links;
 
 class LinksManager
 {
