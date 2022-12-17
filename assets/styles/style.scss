@@ -51,11 +51,23 @@ h1 {
 #container-link {
   @extend .generic-flex;
   margin: vars.$margin;
+
+  #remove-link {
+    font-size: 0.8rem;
+    color: #6b6864;
+    text-decoration: vars.$text-decoration;
+  }
 }
 
 #container-link img {
   width: 9vw;
   height: 9vh;
+}
+
+.details-link {
+  display: block;
+  color: #3b3737;
+  margin: vars.$margin;
 }
 
 /* Register */
@@ -88,6 +100,50 @@ h1 {
     padding: vars.$padding;
   }
 }
+
+/* Register link */
+
+#form-addLink {
+  width: 40vw;
+  font-size: 1.2rem;
+  margin: 2rem;
+  padding: vars.$padding;
+  border: vars.$border;
+
+  label {
+    display: inline-block;
+    text-align: vars.$text-align;
+    width: 15vw;
+    margin: vars.$margin;
+  }
+
+  #btn-addLink {
+    @extend .button-submit;
+  }
+}
+
+/* Login */
+
+#container-login {
+  width: 40vw;
+  font-size: 1.2rem;
+  margin: 2rem;
+  padding: vars.$padding;
+  border: vars.$border;
+
+  label {
+    display: inline-block;
+    text-align: vars.$text-align;
+    width: 15vw;
+    margin: vars.$margin;
+  }
+
+  .submit {
+    @extend .button-submit;
+  }
+}
+
+
 
 
 
