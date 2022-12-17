@@ -52,4 +52,18 @@ class LinkController extends AbstractController
         }
         $this->render('link/add-link');
     }
+
+    /**
+     * @param int $id
+     * @return void
+     */
+    #[NoReturn] public function deleteLink(int $id): void
+    {
+        if (LinksManager::linkExist($id)) {
+           $link = LinksManager::getLinkById($id);
+           LinksManager::deleteLink($link);
+        }
+        header('Location: /?c=home');
+        exit();
+    }
 }

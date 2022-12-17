@@ -44,9 +44,18 @@ h1 {
   @extend .generic-flex;
   #img_home {
     margin: 5rem;
-    width: 53vw;
     height: 50vh;
   }
+}
+;
+#container-link {
+  @extend .generic-flex;
+  margin: vars.$margin;
+}
+
+#container-link img {
+  width: 9vw;
+  height: 9vh;
 }
 
 /* Register */

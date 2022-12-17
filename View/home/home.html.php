@@ -27,7 +27,8 @@ if (isset($data['userLinks'])) {
                     <img src="/img/<?= $link->getImage() ?>" alt="image-name">
                 </div>
                 <div>
-                    <a href="<?= $link->getLink() ?>">Lien</a>
+                    <a href="<?= $link->getLink() ?>"target="_blank"><?= $link->getName() ?></a>
+                    <a href="/?c=link&a=delete-link&id=<?= $link->getId() ?>">Supprimer</a>
                 </div>
             </div>
             <?php

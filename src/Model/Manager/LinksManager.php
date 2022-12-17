@@ -39,7 +39,7 @@ class LinksManager
      */
     public static function linkExist(int $id): bool
     {
-        $result = Connect::dbConnect()->query("SELECT count(*) as cnt FROM " . self::TABLE . "WHERE id = $id");
+        $result = Connect::dbConnect()->query(" SELECT count(*) as cnt FROM " . self::TABLE . " WHERE id = $id");
         return $result ? $result->fetch()['cnt'] : 0 ;
     }
 

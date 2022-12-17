@@ -135,7 +135,7 @@ abstract class AbstractController
             return false;
         }
 
-        $authorizedMimeTypes = ['image/jpeg', 'image/jpg', 'image.png'];
+        $authorizedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png'];
         if (!in_array($_FILES[$field]['type'], $authorizedMimeTypes)) {
             $_SESSION['error'] = "Type de fichier non autorisé (uniquement images jpg, jpeg et png)";
             return false;
