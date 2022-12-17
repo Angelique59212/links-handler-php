@@ -66,7 +66,7 @@ class UserController extends AbstractController
 
             $_SESSION['user'] = $user;
             $_SESSION['success'] = "Vous êtes bien enregistré";
-            $this->render('home/home');
+            header('Location: /?c=home');
         }
         $this->render('user/register');
     }
@@ -100,7 +100,7 @@ class UserController extends AbstractController
         $this->render('user/login');
     }
 
-    public function disconnect(): void
+    #[NoReturn] public function disconnect(): void
     {
         // Keeping messages if any
         $error = $_SESSION['error'] ?? null;
@@ -112,5 +112,78 @@ class UserController extends AbstractController
 
         header("Location: /?c=home");
         exit();
+    }
+
+    /**
+     * @return void
+     */
+    #[NoReturn] public function showUser(): void
+    {
+        $this->redirectIfNotConnected();
+
+        $this->render('user/profile', [
+            'profile' => $_SESSION['user']
+        ]);
+    }
+
+    #[NoReturn] public function editUser()
+    {
+        $this->redirectIfNotConnected();
+        $user = $_SESSION['user'];
+
+        if (isset($_POST['submit'])) {
+            $pseudo = filter_var($_POST['pseudo'], FILTER_SANITIZE_STRING);
+            $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+            $password = null;
+
+            // Change password if required by user (if new password provided)
+            if(isset($_POST['password'], $_POST['passwordRepeat'])) {
+                if (!$this->checkPassword($_POST['password'], $_POST['passwordRepeat'])) {
+                    $_SESSION['error'] = "Les password ne correspondent pas, ou il ne respecte pas les critères de sécurité (minuscule, majuscule, nombre, caractère spécial)";
+                    header("Location: /?c=user&a=edit-user");
+                    exit;
+                }
+                $password = password_hash($_POST['password'], PASSWORD_ARGON2I);
+            }
+
+            UserManager::editUser($user->getId(), $pseudo, $email, $password);
+            $user
+                ->setPseudo($pseudo)
+                ->setEmail($email)
+            ;
+
+            // Save the new User data into the session.
+            $_SESSION['user'] = $user;
+            $_SESSION['success'] = 'Votre profil a bien été modifié';
+
+            $this->render('user/profile', [
+                'profile' => $user
+            ]);
+        }
+        else {
+            // If form is not send, showing user profile and profile edition form.
+            $this->showUser();
+        }
+    }
+
+    /**
+     * @return void
+     */
+    #[NoReturn] public function deleteUser(): void
+    {
+        $this->redirectIfNotConnected();
+        $user = $_SESSION['user'];
+
+        // If user still exists.
+        if (UserManager::userExists($user->getId())) {
+            if(UserManager::deleteUser($user)) {
+                $_SESSION['success'] = "Votre compte a bien été supprimé";
+                self::disconnect();
+            }
+            else {
+                $_SESSION['error'] = "Impossible de supprimer votre compte, veuillez contacter un administrateur svp";
+            }
+        }
+        $this->index();
     }
 }

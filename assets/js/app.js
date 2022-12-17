@@ -10,5 +10,5 @@ if (close) {
     }
     // Closing manually and by timeout.
     close.addEventListener("click", () => closeMessage());
-    setTimeout(() => closeMessage(), 6000);
+    setTimeout(() => closeMessage(), 3000);
 }

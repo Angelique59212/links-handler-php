@@ -31,6 +31,44 @@ class UserManager
     }
 
     /**
+     * @param int $id
+     * @param string $pseudo
+     * @param string $email
+     * @param string|null $password
+     * @return void
+     */
+    public static function editUser(int $id, string $pseudo, string $email, string $password = null): void
+    {
+        $passwordField = null !== $password ? ', password=:password' : '';
+        $stmt = Connect::dbConnect()->prepare("
+            UPDATE " . self::TABLE .
+            " SET pseudo= :pseudo, email = :email" . $passwordField .
+            " WHERE id = $id
+        ");
+        $stmt->bindParam(':pseudo', $pseudo);
+        $stmt->bindParam(':email', $email);
+        if(null !== $password) {
+            $stmt->bindParam(':password', $password);
+        }
+
+        $stmt->execute();
+    }
+
+    /**
+     * @param User $user
+     * @return bool
+     */
+    public static function deleteUser(User $user): bool
+    {
+        if (self::userExists($user->getId())) {
+            return Connect::dbConnect()->exec("
+                DELETE FROM " . self::TABLE . " WHERE id = {$user->getId()}
+            ");
+        }
+        return false;
+    }
+
+    /**
      * @param array $data
      * @return User
      */

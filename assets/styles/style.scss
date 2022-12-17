@@ -73,17 +73,10 @@ h1 {
 /* Register */
 
 #form-register {
-  width: 40vw;
-  font-size: 1.2rem;
-  margin: 2rem;
-  padding: vars.$padding;
-  border: vars.$border;
+  @extend .forms-container;
 
   label {
-    display: inline-block;
-    text-align: vars.$text-align;
-    width: 15vw;
-    margin: vars.$margin;
+    @extend .label;
   }
 
   input {
@@ -104,17 +97,10 @@ h1 {
 /* Register link */
 
 #form-addLink {
-  width: 40vw;
-  font-size: 1.2rem;
-  margin: 2rem;
-  padding: vars.$padding;
-  border: vars.$border;
+  @extend .forms-container;
 
   label {
-    display: inline-block;
-    text-align: vars.$text-align;
-    width: 15vw;
-    margin: vars.$margin;
+    @extend .label
   }
 
   #btn-addLink {
@@ -125,17 +111,24 @@ h1 {
 /* Login */
 
 #container-login {
-  width: 40vw;
-  font-size: 1.2rem;
-  margin: 2rem;
-  padding: vars.$padding;
-  border: vars.$border;
+  @extend .forms-container;
 
   label {
-    display: inline-block;
-    text-align: vars.$text-align;
-    width: 15vw;
-    margin: vars.$margin;
+    @extend .label;
+  }
+
+  .submit {
+    @extend .button-submit;
+  }
+}
+
+/* Profil */
+
+#profile-container {
+  @extend .forms-container;
+
+  label {
+    @extend .label;
   }
 
   .submit {
