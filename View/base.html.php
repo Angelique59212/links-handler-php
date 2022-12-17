@@ -9,23 +9,20 @@
 </head>
 <body><?php
 
-// error message
-if (isset($_SESSION['errors']) && count($_SESSION['errors']) > 0) {
-    $errors = $_SESSION['errors'];
-    unset($_SESSION['errors']);
-
-    foreach ($errors as $error) {?>
-        <div class="alert-error"><?= $error ?></div><?php
+function getMessages(string $type): void
+{
+if (isset($_SESSION[$type])) { ?>
+<div class="message-<?= $type ?>">
+    <p><?= $_SESSION[$type] ?></p>
+    <button id="close">x</button>
+</div> <?php
+        unset($_SESSION[$type]);
     }
 }
 
-//success message
-if (isset($_SESSION['success'])) {
-    $message = $_SESSION['success'];
-    unset($_SESSION['success']);
-    ?>
-    <div class="alert-success"><?= $message ?></div><?php
-}?>
+// Error and success messages.
+getMessages('error');
+getMessages('success');?>
 
 <header>
     <div id="menu">
@@ -42,6 +39,7 @@ if (isset($_SESSION['success'])) {
             } else { ?>
                     <ul>
                         <li><a class="link-menu" href="/?c=home">Accueil</a></li>
+                        <li><a class="link-menu" href="/?c=user&a=edit-user">Profil</a></li>
                         <li><a class="link-menu" href="/?c=link&a=add-link">Ajouter un lien</a></li>
                         <li><a class="link-menu" href="/?c=user&a=disconnect">Se déconnecter</a></li>
                     </ul>

@@ -50,7 +50,6 @@ h1 {
 ;
 #container-link {
   @extend .generic-flex;
-  margin: vars.$margin;
 
   #remove-link {
     font-size: 0.8rem;
@@ -62,13 +61,14 @@ h1 {
 #container-link img {
   width: 9vw;
   height: 9vh;
+  margin: 0.5rem;
 }
 
 .details-link {
   display: block;
   color: #3b3737;
-  margin: vars.$margin;
 }
+
 
 /* Register */
 
@@ -143,6 +143,39 @@ h1 {
   }
 }
 
+/* message */
+
+.message-error, .message-success {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  color: white;
+  padding: 2rem;
+  font-weight: bold;
+}
+
+.message-error {
+  background-color: indianred;
+}
+
+.message-success {
+  background-color: mediumaquamarine;
+}
+
+.message-error #close, .message-success #close {
+  margin-left: 0.8rem;
+  background: transparent;
+  color: white;
+  font-weight: bold;
+  display: flex;
+}
+
+#close {
+  border: none;
+  width: 1rem;
+}
 
 
 

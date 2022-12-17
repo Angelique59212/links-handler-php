@@ -34,7 +34,7 @@ class UserController extends AbstractController
                 exit();
             }
 
-            if ($this->checkPassword($_POST['password'],$_POST['repeat-password'])) {
+            if (!$this->checkPassword($_POST['password'],$_POST['repeat-password'])) {
 
                 $_SESSION['error'] = "Les password ne correspondent pas, ou il ne respecte pas les critères de sécurité (minuscule, majuscule, nombre, caractère spécial)";
                 header("Location: /?c=user&a=register");
