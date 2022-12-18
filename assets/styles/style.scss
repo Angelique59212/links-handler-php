@@ -1,4 +1,5 @@
 @use "modules/vars";
+@import "modules/breakpoints";
 
 * {
   margin: 0;
@@ -45,11 +46,19 @@ h1 {
   #img_home {
     margin: 5rem;
     height: 50vh;
+
+    @include large {
+      width: 95vw;
+      height: 50vh;
+    }
   }
 }
 ;
 #container-link {
   @extend .generic-flex;
+  @include large {
+    margin: 0.2rem;
+  }
 
   #remove-link {
     font-size: 0.8rem;
@@ -62,11 +71,17 @@ h1 {
   width: 9vw;
   height: 9vh;
   margin: 0.5rem;
+  @include large {
+    width: 20vw;
+  }
 }
 
 .details-link {
   display: block;
   color: #3b3737;
+  @include large {
+    margin: 0.8rem;
+  }
 }
 
 
@@ -74,15 +89,25 @@ h1 {
 
 #form-register {
   @extend .forms-container;
+  @include large {
+    width: 80vw;
+  }
 
   label {
     @extend .label;
+    @include large {
+      width: 20vw;
+    }
   }
 
   input {
     height: 3vh;
     width: 24vw;
     margin-left: 0.4rem;
+
+    @include large {
+      width: 40vw;
+    }
   }
 
   .submit {
@@ -91,6 +116,9 @@ h1 {
     height: 5vh;
     margin: vars.$margin;
     padding: vars.$padding;
+    @include large {
+      width: 30vw;
+    }
   }
 }
 
@@ -98,9 +126,15 @@ h1 {
 
 #form-addLink {
   @extend .forms-container;
+  @include large {
+    width: 80vw;
+  }
 
   label {
-    @extend .label
+    @extend .label;
+    @include large {
+      width: 35vw;
+    }
   }
 
   #btn-addLink {
@@ -112,9 +146,15 @@ h1 {
 
 #container-login {
   @extend .forms-container;
+  @include large {
+    width: 80vw;
+  }
 
   label {
     @extend .label;
+    @include large {
+      width: 30vw;
+    }
   }
 
   .submit {
@@ -126,9 +166,15 @@ h1 {
 
 #profile-container {
   @extend .forms-container;
+  @include large {
+    width: 80vw;
+  }
 
   label {
     @extend .label;
+    @include large {
+      width: 40vw;
+    }
   }
 
   .submit {
